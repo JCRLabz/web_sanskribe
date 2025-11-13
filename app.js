@@ -9,86 +9,14 @@ const inputCount = document.getElementById('inputCount');
 const outputCount = document.getElementById('outputCount');
 const exampleButtons = document.querySelectorAll('.example-btn');
 
-// Sanscript transliteration mapping for Harvard-Kyoto to Devanagari
-const vowels = {
-    'a': 'अ', 'A': 'आ', 'i': 'इ', 'I': 'ई', 'u': 'उ', 'U': 'ऊ',
-    'R': 'ऋ', 'RR': 'ॠ', 'lR': 'ऌ', 'lRR': 'ॡ',
-    'e': 'ए', 'ai': 'ऐ', 'o': 'ओ', 'au': 'औ'
-};
-
-const consonants = {
-    'k': 'क', 'kh': 'ख', 'g': 'ग', 'gh': 'घ', 'G': 'ङ',
-    'c': 'च', 'ch': 'छ', 'j': 'ज', 'jh': 'झ', 'J': 'ञ',
-    'T': 'ट', 'Th': 'ठ', 'D': 'ड', 'Dh': 'ढ', 'N': 'ण',
-    't': 'त', 'th': 'थ', 'd': 'द', 'dh': 'ध', 'n': 'न',
-    'p': 'प', 'ph': 'फ', 'b': 'ब', 'bh': 'भ', 'm': 'म',
-    'y': 'य', 'r': 'र', 'l': 'ल', 'v': 'व',
-    'z': 'श', 'S': 'ष', 's': 'स', 'h': 'ह',
-    'M': 'ं', 'H': 'ः', '.': '।'
-};
-
-const vowelMarks = {
-    'a': '', 'A': 'ा', 'i': 'ि', 'I': 'ी', 'u': 'ु', 'U': 'ू',
-    'R': 'ृ', 'RR': 'ॄ', 'lR': 'ॢ', 'lRR': 'ॣ',
-    'e': 'े', 'ai': 'ै', 'o': 'ो', 'au': 'ौ'
-};
-
-// Simple transliteration function
+// Wait for Sanscript to load
 function transliterate(text) {
     if (!text) return '';
-    
-    let result = '';
-    let i = 0;
-    
-    while (i < text.length) {
-        let matched = false;
-        
-        // Try to match longer sequences first
-        for (let len = 3; len >= 1; len--) {
-            const substr = text.substr(i, len);
-            
-            // Check for vowels
-            if (vowels[substr]) {
-                result += vowels[substr];
-                i += len;
-                matched = true;
-                break;
-            }
-            
-            // Check for consonants
-            if (consonants[substr]) {
-                result += consonants[substr];
-                
-                // Look ahead for vowel mark
-                let j = i + len;
-                let vowelMatched = false;
-                for (let vlen = 3; vlen >= 1; vlen--) {
-                    const vsubstr = text.substr(j, vlen);
-                    if (vowelMarks[vsubstr]) {
-                        result += vowelMarks[vsubstr];
-                        i = j + vlen;
-                        vowelMatched = true;
-                        break;
-                    }
-                }
-                
-                if (!vowelMatched) {
-                    result += '्'; // Add halant if no vowel follows
-                    i += len;
-                }
-                matched = true;
-                break;
-            }
-        }
-        
-        // If no match, keep the character as-is
-        if (!matched) {
-            result += text[i];
-            i++;
-        }
+    if (typeof Sanscript === 'undefined') {
+        console.error('Sanscript not loaded');
+        return text;
     }
-    
-    return result;
+    return Sanscript.t(text, 'hk', 'devanagari');
 }
 
 // Update character counts
@@ -120,8 +48,6 @@ copyBtn.addEventListener('click', async () => {
             copyBtn.textContent = 'Copy';
         }, 2000);
     } catch (error) {
-        console.error('Copy failed:', error);
-        // Fallback for older browsers
         outputText.select();
         document.execCommand('copy');
         copyBtn.textContent = '✓ Copied!';
