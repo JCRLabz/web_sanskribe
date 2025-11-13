@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanskrit Transliteration - Harvard-Kyoto to Devanagari</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕉️</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🕉️ Sanskrit Transliteration</h1>
+            <p class="subtitle">Harvard-Kyoto to Devanagari Converter</p>
+        </header>
+
+        <main>
+            <div class="editor-section">
+                <div class="input-panel">
+                    <div class="panel-header">
+                        <h2>Input (Harvard-Kyoto)</h2>
+                        <button id="clearBtn" class="btn-secondary">Clear</button>
+                    </div>
+                    <textarea 
+                        id="inputText" 
+                        placeholder="Type Sanskrit in Harvard-Kyoto...&#10;&#10;Examples:&#10;  namaste → नमस्ते&#10;  dharma → धर्म&#10;  kRSNa → कृष्ण&#10;  rAma sItA → राम सीता"
+                        spellcheck="false"
+                    ></textarea>
+                    <div class="char-count">
+                        <span id="inputCount">0</span> characters
+                    </div>
+                </div>
+
+                <div class="output-panel">
+                    <div class="panel-header">
+                        <h2>Output (Devanagari)</h2>
+                        <button id="copyBtn" class="btn-secondary">Copy</button>
+                    </div>
+                    <textarea 
+                        id="outputText" 
+                        placeholder="Devanagari output will appear here..."
+                        readonly
+                    ></textarea>
+                    <div class="char-count">
+                        <span id="outputCount">0</span> characters
+                    </div>
+                </div>
+            </div>
+
+            <div class="options">
+                <label class="toggle">
+                    <input type="checkbox" id="autoTransliterate" checked>
+                    <span>Real-time transliteration</span>
+                </label>
+                <button id="translateBtn" class="btn-primary">Transliterate</button>
+            </div>
+
+            <div class="reference">
+                <details>
+                    <summary>📖 Harvard-Kyoto Quick Reference</summary>
+                    <div class="reference-content">
+                        <div class="ref-section">
+                            <h3>Vowels</h3>
+                            <table>
+                                <tr><td><code>a</code></td><td>अ</td><td><code>A</code></td><td>आ</td></tr>
+                                <tr><td><code>i</code></td><td>इ</td><td><code>I</code></td><td>ई</td></tr>
+                                <tr><td><code>u</code></td><td>उ</td><td><code>U</code></td><td>ऊ</td></tr>
+                                <tr><td><code>R</code></td><td>ऋ</td><td><code>RR</code></td><td>ॠ</td></tr>
+                                <tr><td><code>e</code></td><td>ए</td><td><code>ai</code></td><td>ऐ</td></tr>
+                                <tr><td><code>o</code></td><td>ओ</td><td><code>au</code></td><td>औ</td></tr>
+                            </table>
+                        </div>
+                        <div class="ref-section">
+                            <h3>Common Consonants</h3>
+                            <table>
+                                <tr><td><code>k</code></td><td>क</td><td><code>kh</code></td><td>ख</td></tr>
+                                <tr><td><code>g</code></td><td>ग</td><td><code>gh</code></td><td>घ</td></tr>
+                                <tr><td><code>c</code></td><td>च</td><td><code>ch</code></td><td>छ</td></tr>
+                                <tr><td><code>j</code></td><td>ज</td><td><code>jh</code></td><td>झ</td></tr>
+                                <tr><td><code>T</code></td><td>ट</td><td><code>Th</code></td><td>ठ</td></tr>
+                                <tr><td><code>D</code></td><td>ड</td><td><code>Dh</code></td><td>ढ</td></tr>
+                                <tr><td><code>N</code></td><td>ण</td><td><code>t</code></td><td>त</td></tr>
+                                <tr><td><code>d</code></td><td>द</td><td><code>n</code></td><td>न</td></tr>
+                                <tr><td><code>p</code></td><td>प</td><td><code>b</code></td><td>ब</td></tr>
+                                <tr><td><code>m</code></td><td>म</td><td><code>y</code></td><td>य</td></tr>
+                                <tr><td><code>r</code></td><td>र</td><td><code>l</code></td><td>ल</td></tr>
+                                <tr><td><code>v</code></td><td>व</td><td><code>h</code></td><td>ह</td></tr>
+                            </table>
+                        </div>
+                        <div class="ref-section">
+                            <h3>Sibilants & Special</h3>
+                            <table>
+                                <tr><td><code>z</code></td><td>श</td><td><code>S</code></td><td>ष</td></tr>
+                                <tr><td><code>s</code></td><td>स</td><td><code>M</code></td><td>ं</td></tr>
+                                <tr><td><code>H</code></td><td>ः</td><td><code>G</code></td><td>ङ</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="examples">
+                <h3>Try These Examples:</h3>
+                <div class="example-buttons">
+                    <button class="example-btn" data-text="namaste">namaste</button>
+                    <button class="example-btn" data-text="dharma">dharma</button>
+                    <button class="example-btn" data-text="karma">karma</button>
+                    <button class="example-btn" data-text="kRSNa">kRSNa</button>
+                    <button class="example-btn" data-text="rAma sItA lakSmaNa">rAma sItA lakSmaNa</button>
+                    <button class="example-btn" data-text="saGskRta bhASA">saGskRta bhASA</button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Built with <a href="https://www.npmjs.com/package/@indic-transliteration/sanscript" target="_blank">@indic-transliteration/sanscript</a></p>
+            <p>Harvard-Kyoto transliteration scheme • Free and open source</p>
+        </footer>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
+
