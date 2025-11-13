@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sanskrit Transliteration</title>
+    <title>Sanskrit Transliteration - Harvard-Kyoto to Devanagari</title>
     <style>
         * {
             margin: 0;
@@ -11,43 +11,57 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #ff9933;
+            --secondary: #138808;
+            --accent: #000080;
+            --bg: #f5f5f5;
+            --card-bg: #ffffff;
+            --text: #333;
+            --text-light: #666;
+            --border: #ddd;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #fff5e6 0%, #e6f3ff 100%);
-            padding: 20px;
+            color: var(--text);
+            line-height: 1.6;
             min-height: 100vh;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 20px;
         }
 
         header {
             text-align: center;
-            background: white;
-            padding: 30px;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            background: var(--card-bg);
             border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px var(--shadow);
         }
 
         h1 {
-            color: #ff9933;
             font-size: 2.5rem;
+            color: var(--primary);
             margin-bottom: 10px;
         }
 
         .subtitle {
-            color: #666;
+            color: var(--text-light);
             font-size: 1.1rem;
         }
 
         main {
-            background: white;
-            padding: 30px;
+            background: var(--card-bg);
             border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+            box-shadow: 0 4px 6px var(--shadow);
         }
 
         .editor-section {
@@ -57,7 +71,7 @@
             margin-bottom: 20px;
         }
 
-        .panel {
+        .input-panel, .output-panel {
             display: flex;
             flex-direction: column;
         }
@@ -71,23 +85,24 @@
 
         .panel-header h2 {
             font-size: 1.2rem;
-            color: #000080;
+            color: var(--accent);
         }
 
         textarea {
             width: 100%;
             height: 300px;
             padding: 15px;
-            border: 2px solid #ddd;
+            border: 2px solid var(--border);
             border-radius: 10px;
             font-size: 1rem;
-            font-family: 'Noto Sans Devanagari', Arial, sans-serif;
+            font-family: 'Noto Sans Devanagari', 'Segoe UI', sans-serif;
             resize: vertical;
+            transition: border-color 0.3s;
         }
 
         textarea:focus {
             outline: none;
-            border-color: #ff9933;
+            border-color: var(--primary);
         }
 
         #outputText {
@@ -99,7 +114,7 @@
         .char-count {
             text-align: right;
             font-size: 0.85rem;
-            color: #666;
+            color: var(--text-light);
             margin-top: 5px;
         }
 
@@ -108,8 +123,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 0;
-            border-top: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
             margin-bottom: 20px;
         }
 
@@ -118,51 +133,105 @@
             align-items: center;
             gap: 10px;
             cursor: pointer;
+            font-size: 1rem;
         }
 
-        .toggle input {
+        .toggle input[type="checkbox"] {
             width: 20px;
             height: 20px;
             cursor: pointer;
         }
 
-        button {
-            padding: 12px 30px;
+        .btn-primary {
+            background: var(--primary);
+            color: white;
             border: none;
+            padding: 12px 30px;
             border-radius: 8px;
             font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
         }
 
-        .btn-primary {
-            background: #ff9933;
-            color: white;
-            font-weight: 600;
-        }
-
         .btn-primary:hover {
             background: #e68a2e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow);
         }
 
         .btn-secondary {
-            background: #138808;
+            background: var(--secondary);
             color: white;
+            border: none;
             padding: 8px 20px;
+            border-radius: 6px;
             font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
         .btn-secondary:hover {
             background: #0f6a06;
         }
 
-        .examples {
+        .reference {
+            margin: 30px 0;
+        }
+
+        details {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 15px;
+            background: #fafafa;
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--accent);
+            user-select: none;
+        }
+
+        .reference-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
             margin-top: 20px;
+        }
+
+        .ref-section h3 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table td {
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+        }
+
+        table td code {
+            background: #e8e8e8;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+        }
+
+        .examples {
+            margin-top: 30px;
         }
 
         .examples h3 {
             margin-bottom: 15px;
-            color: #000080;
+            color: var(--accent);
         }
 
         .example-buttons {
@@ -173,24 +242,57 @@
 
         .example-btn {
             background: #e8f4f8;
-            border: 1px solid #000080;
+            border: 1px solid var(--accent);
             padding: 8px 16px;
             border-radius: 6px;
             cursor: pointer;
             font-family: 'Courier New', monospace;
+            transition: all 0.3s;
         }
 
         .example-btn:hover {
-            background: #000080;
+            background: var(--accent);
             color: white;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
         }
 
         @media (max-width: 768px) {
             .editor-section {
                 grid-template-columns: 1fr;
             }
+
             h1 {
                 font-size: 1.8rem;
+            }
+
+            .options {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+
+            .btn-primary {
+                width: 100%;
+            }
+
+            .reference-content {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -204,28 +306,37 @@
 
         <main>
             <div class="editor-section">
-                <div class="panel">
+                <div class="input-panel">
                     <div class="panel-header">
                         <h2>Input (Harvard-Kyoto)</h2>
                         <button id="clearBtn" class="btn-secondary">Clear</button>
                     </div>
-                    <textarea id="inputText" placeholder="Type Sanskrit in Harvard-Kyoto...
+                    <textarea 
+                        id="inputText" 
+                        placeholder="Type Sanskrit in Harvard-Kyoto...
 
 Examples:
   namaste → नमस्ते
   dharma → धर्म
-  kRSNa → कृष्ण"></textarea>
+  kRSNa → कृष्ण
+  rAma sItA → राम सीता"
+                        spellcheck="false"
+                    ></textarea>
                     <div class="char-count">
                         <span id="inputCount">0</span> characters
                     </div>
                 </div>
 
-                <div class="panel">
+                <div class="output-panel">
                     <div class="panel-header">
                         <h2>Output (Devanagari)</h2>
                         <button id="copyBtn" class="btn-secondary">Copy</button>
                     </div>
-                    <textarea id="outputText" placeholder="Devanagari output will appear here..." readonly></textarea>
+                    <textarea 
+                        id="outputText" 
+                        placeholder="Devanagari output will appear here..."
+                        readonly
+                    ></textarea>
                     <div class="char-count">
                         <span id="outputCount">0</span> characters
                     </div>
@@ -240,6 +351,51 @@ Examples:
                 <button id="translateBtn" class="btn-primary">Transliterate</button>
             </div>
 
+            <div class="reference">
+                <details>
+                    <summary>📖 Harvard-Kyoto Quick Reference</summary>
+                    <div class="reference-content">
+                        <div class="ref-section">
+                            <h3>Vowels</h3>
+                            <table>
+                                <tr><td><code>a</code></td><td>अ</td><td><code>A</code></td><td>आ</td></tr>
+                                <tr><td><code>i</code></td><td>इ</td><td><code>I</code></td><td>ई</td></tr>
+                                <tr><td><code>u</code></td><td>उ</td><td><code>U</code></td><td>ऊ</td></tr>
+                                <tr><td><code>R</code></td><td>ऋ</td><td><code>RR</code></td><td>ॠ</td></tr>
+                                <tr><td><code>e</code></td><td>ए</td><td><code>ai</code></td><td>ऐ</td></tr>
+                                <tr><td><code>o</code></td><td>ओ</td><td><code>au</code></td><td>औ</td></tr>
+                            </table>
+                        </div>
+                        <div class="ref-section">
+                            <h3>Common Consonants</h3>
+                            <table>
+                                <tr><td><code>k</code></td><td>क</td><td><code>kh</code></td><td>ख</td></tr>
+                                <tr><td><code>g</code></td><td>ग</td><td><code>gh</code></td><td>घ</td></tr>
+                                <tr><td><code>c</code></td><td>च</td><td><code>ch</code></td><td>छ</td></tr>
+                                <tr><td><code>j</code></td><td>ज</td><td><code>jh</code></td><td>झ</td></tr>
+                                <tr><td><code>T</code></td><td>ट</td><td><code>Th</code></td><td>ठ</td></tr>
+                                <tr><td><code>D</code></td><td>ड</td><td><code>Dh</code></td><td>ढ</td></tr>
+                                <tr><td><code>N</code></td><td>ण</td><td><code>t</code></td><td>त</td></tr>
+                                <tr><td><code>d</code></td><td>द</td><td><code>n</code></td><td>न</td></tr>
+                                <tr><td><code>p</code></td><td>प</td><td><code>b</code></td><td>ब</td></tr>
+                                <tr><td><code>m</code></td><td>म</td><td><code>y</code></td><td>य</td></tr>
+                                <tr><td><code>r</code></td><td>र</td><td><code>l</code></td><td>ल</td></tr>
+                                <tr><td><code>v</code></td><td>व</td><td><code>h</code></td><td>ह</td></tr>
+                            </table>
+                        </div>
+                        <div class="ref-section">
+                            <h3>Sibilants & Special</h3>
+                            <table>
+                                <tr><td><code>z</code></td><td>श</td><td><code>S</code></td><td>ष</td></tr>
+                                <tr><td><code>s</code></td><td>स</td><td><code>M</code></td><td>ं</td></tr>
+                                <tr><td><code>H</code></td><td>ः</td><td><code>G</code></td><td>ङ</td></tr>
+                                <tr><td><code>J</code></td><td>ञ</td><td><code>lR</code></td><td>ऌ</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
             <div class="examples">
                 <h3>Try These Examples:</h3>
                 <div class="example-buttons">
@@ -247,10 +403,20 @@ Examples:
                     <button class="example-btn" data-text="dharma">dharma</button>
                     <button class="example-btn" data-text="karma">karma</button>
                     <button class="example-btn" data-text="kRSNa">kRSNa</button>
-                    <button class="example-btn" data-text="rAma sItA">rAma sItA</button>
+                    <button class="example-btn" data-text="rAma sItA lakSmaNa">rAma sItA lakSmaNa</button>
+                    <button class="example-btn" data-text="saGskRta bhASA">saGskRta bhASA</button>
+                    <button class="example-btn" data-text="mahAbhArata">mahAbhArata</button>
+                    <button class="example-btn" data-text="rAmAyaNa">rAmAyaNa</button>
+                    <button class="example-btn" data-text="bhagavad gItA">bhagavad gItA</button>
                 </div>
             </div>
         </main>
+
+        <footer>
+            <p>Built with ❤️ for Sanskrit enthusiasts and scholars</p>
+            <p>Using Harvard-Kyoto transliteration scheme • Free and open source</p>
+            <p>Based on <a href="https://www.npmjs.com/package/@indic-transliteration/sanscript" target="_blank">@indic-transliteration/sanscript</a> principles</p>
+        </footer>
     </div>
 
     <script>
@@ -267,16 +433,10 @@ Examples:
         const outputCount = document.getElementById('outputCount');
         const exampleButtons = document.querySelectorAll('.example-btn');
 
-        console.log('Elements found:', {
-            inputText: !!inputText,
-            outputText: !!outputText,
-            buttons: exampleButtons.length
-        });
-
-        // Simple Harvard-Kyoto to Devanagari mapping
+        // Harvard-Kyoto to Devanagari mapping
         const hkMap = {
             // Vowels
-            'A': 'आ', 'I': 'ई', 'U': 'ऊ', 'R': 'ऋ', 'RR': 'ॠ', 'lR': 'ऌ',
+            'A': 'आ', 'I': 'ई', 'U': 'ऊ', 'R': 'ऋ', 'RR': 'ॠ', 'lR': 'ऌ', 'lRR': 'ॡ',
             'e': 'ए', 'ai': 'ऐ', 'o': 'ओ', 'au': 'औ',
             // Consonants
             'kh': 'ख', 'gh': 'घ', 'G': 'ङ',
@@ -290,16 +450,17 @@ Examples:
             'y': 'य', 'r': 'र', 'l': 'ल', 'v': 'व',
             'z': 'श', 'S': 'ष', 's': 'स', 'h': 'ह',
             'M': 'ं', 'H': 'ः',
-            // Vowel marks
             'a': ''
         };
 
         const vowelMarks = {
             'A': 'ा', 'i': 'ि', 'I': 'ी', 'u': 'ु', 'U': 'ू',
-            'R': 'ृ', 'RR': 'ॄ', 'e': 'े', 'ai': 'ै', 'o': 'ो', 'au': 'ौ', 'a': ''
+            'R': 'ृ', 'RR': 'ॄ', 'lR': 'ॢ', 'lRR': 'ॣ',
+            'e': 'े', 'ai': 'ै', 'o': 'ो', 'au': 'ौ', 
+            'a': ''
         };
 
-        // Simple transliteration function
+        // Transliteration function
         function transliterate(text) {
             if (!text) return '';
             
@@ -316,16 +477,16 @@ Examples:
                 while (i < word.length) {
                     let found = false;
                     
-                    // Try longer sequences first
+                    // Try longer sequences first (up to 3 chars)
                     for (let len = 3; len >= 1; len--) {
                         let sub = word.substr(i, len);
                         
                         if (hkMap[sub]) {
                             result += hkMap[sub];
                             
-                            // Check for vowel mark
+                            // Check for vowel mark following consonant
                             let nextVowel = '';
-                            for (let vlen = 2; vlen >= 1; vlen--) {
+                            for (let vlen = 3; vlen >= 1; vlen--) {
                                 let vsub = word.substr(i + len, vlen);
                                 if (vowelMarks[vsub] !== undefined) {
                                     result += vowelMarks[vsub];
@@ -336,7 +497,7 @@ Examples:
                             }
                             
                             if (!found) {
-                                result += '्';
+                                result += '्'; // Add halant
                                 i += len;
                                 found = true;
                             }
@@ -362,7 +523,6 @@ Examples:
 
         // Input event listener
         inputText.addEventListener('input', function() {
-            console.log('Input changed:', inputText.value);
             if (autoTransliterate.checked) {
                 outputText.value = transliterate(inputText.value);
             }
@@ -371,24 +531,30 @@ Examples:
 
         // Translate button
         translateBtn.addEventListener('click', function() {
-            console.log('Translate clicked');
             outputText.value = transliterate(inputText.value);
             updateCounts();
         });
 
         // Copy button
-        copyBtn.addEventListener('click', function() {
-            outputText.select();
-            document.execCommand('copy');
-            copyBtn.textContent = '✓ Copied!';
-            setTimeout(() => {
-                copyBtn.textContent = 'Copy';
-            }, 2000);
+        copyBtn.addEventListener('click', async function() {
+            try {
+                await navigator.clipboard.writeText(outputText.value);
+                copyBtn.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    copyBtn.textContent = 'Copy';
+                }, 2000);
+            } catch (error) {
+                outputText.select();
+                document.execCommand('copy');
+                copyBtn.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    copyBtn.textContent = 'Copy';
+                }, 2000);
+            }
         });
 
         // Clear button
         clearBtn.addEventListener('click', function() {
-            console.log('Clear clicked');
             inputText.value = '';
             outputText.value = '';
             updateCounts();
@@ -398,15 +564,23 @@ Examples:
         // Example buttons
         exampleButtons.forEach(function(btn) {
             btn.addEventListener('click', function() {
-                console.log('Example clicked:', btn.dataset.text);
                 inputText.value = btn.dataset.text;
                 outputText.value = transliterate(btn.dataset.text);
                 updateCounts();
             });
         });
 
+        // Auto-transliterate toggle
+        autoTransliterate.addEventListener('change', function() {
+            if (autoTransliterate.checked && inputText.value) {
+                outputText.value = transliterate(inputText.value);
+                updateCounts();
+            }
+        });
+
         // Initialize
         updateCounts();
+        inputText.focus();
         console.log('Initialization complete');
     </script>
 </body>
